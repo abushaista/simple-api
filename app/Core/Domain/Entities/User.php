@@ -2,6 +2,7 @@
 
 namespace App\Core\Domain\Entities;
 use App\Core\Domain\Events\UserRegistered;
+use Carbon\Carbon;
 
 class User {
     public int $id;

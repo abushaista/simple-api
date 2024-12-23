@@ -12,7 +12,9 @@ class CreateUserCommandHandler {
     }
 
     public function handle(CreateUserCommand $command) {
-        $user = new User($command->name, $command->email, $command->$password);
+        $user = new User($command->name, $command->email, $command->password);
         $result = $this->userRepository->Save($user);
+        unset($result->password);
+        return $result;
     }
 }

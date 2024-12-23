@@ -2,6 +2,7 @@
 
 namespace App\Core\Domain\Events;
 use Illuminate\Foundation\Events\Dispatchable;
+use Carbon\Carbon;
 
 class UserRegistered {
     use Dispatchable;
