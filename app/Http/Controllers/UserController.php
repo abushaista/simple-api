@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Core\Application\Dispatcher;
+use Illuminate\Support\Facades\Validator;
+use App\Core\Application\Commands\CreateUserCommand;
 
 class UserController extends Controller
 {
-    
-    public function __construct(){
-
+    private Dispatcher $dispatcher;
+    public function __construct(Dispatcher $dispatcher){
+        $this->dispatcher = $dispatcher;
     }
     /**
      * Display a listing of the resource.
@@ -26,6 +29,21 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|min:3|max:80',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+        $createUser = new CreateUserCommand(
+            $request->name, 
+            $request->email,
+            $request->password,
+        );
+        $result = $this->dispatcher->dispatch($createUser);
+        return response()->json($result);
         //
     }
 
