@@ -14,6 +14,9 @@ class CreateUserCommandHandler {
     public function handle(CreateUserCommand $command) {
         $user = new User($command->name, $command->email, $command->password);
         $result = $this->userRepository->Save($user);
+        foreach($result->releaseDomainEvents() as $event) {
+            
+        }
         unset($result->password);
         return $result;
     }
