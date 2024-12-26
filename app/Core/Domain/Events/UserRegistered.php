@@ -3,9 +3,10 @@
 namespace App\Core\Domain\Events;
 use Illuminate\Foundation\Events\Dispatchable;
 use Carbon\Carbon;
+use Illuminate\Queue\SerializesModels;
 
 class UserRegistered {
-    use Dispatchable;
+    use Dispatchable, SerializesModels;
 
     public function __construct(
         public string $email,

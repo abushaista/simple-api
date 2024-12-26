@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use App\Core\Domain\Events\UserRegistered;
 
 class WelcomeEmail extends Mailable
 {
@@ -16,7 +17,7 @@ class WelcomeEmail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(UserRegistered $event)
     {
         //
     }
@@ -37,7 +38,7 @@ class WelcomeEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.emails.welcome',
+            view: 'emails.welcome',
         );
     }
 
