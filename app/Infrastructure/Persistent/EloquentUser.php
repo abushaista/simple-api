@@ -18,7 +18,7 @@ class EloquentUser implements UserRepository {
     }
 
     public function GetUsers(?string $term, int $page, string $sortBy) : array {
-        $query = User::where('active', true);
+        $query = UserModel::where('active', true);
 
         if($term) {
             $query->where('name', $term)
@@ -26,6 +26,6 @@ class EloquentUser implements UserRepository {
         }
         $query->orderBy($sortBy);
         $query->skip($page*10)->take(10);
-        return $query->get();
+        return $query->get()->toArray();
     }
 }
