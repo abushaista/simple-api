@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Core\Application\Dispatcher;
 use Illuminate\Support\Facades\Validator;
 use App\Core\Application\Commands\CreateUserCommand;
+use App\Core\Application\Queries\GetUserQuery;
 
 class UserController extends Controller
 {
@@ -16,12 +17,16 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $query = new GetUserQuery(
+            searchTerm: $request->input('search'),
+            page: (int)$request->input('page',1),
+            sortBy: $request->input('sortBy')
+        );
         //
-        return response()->json([
-            'id' => 1,
-        ]);
+        $result = $this->dispatcher->dispatch($query);
+        return response()->json($result);
     }
 
     /**

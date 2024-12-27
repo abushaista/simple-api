@@ -16,4 +16,16 @@ class EloquentUser implements UserRepository {
         $user->createdAt = $result->created_at;
         return $user;
     }
+
+    public function GetUsers(?string $term, int $page, string $sortBy) : array {
+        $query = User::where('active', true);
+
+        if($term) {
+            $query->where('name', $term)
+                ->orWhere('email', $term);
+        }
+        $query->orderBy($sortBy);
+        $query->skip($page*10)->take(10);
+        return $query->get();
+    }
 }
