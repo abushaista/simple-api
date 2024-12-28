@@ -18,14 +18,14 @@ class EloquentUser implements UserRepository {
     }
 
     public function GetUsers(?string $term, int $page, string $sortBy) : array {
-        $query = User::where('active', true);
-
+        $query = UserModel::withCount('orders')->where('active', true);
         if($term) {
-            $query->where('name', $term)
-                ->orWhere('email', $term);
+            $query->where('name', 'like', "%{$term}%")
+                ->orWhere('email', 'like', "%{$term}%");
         }
         $query->orderBy($sortBy);
-        $query->skip($page*10)->take(10);
-        return $query->get();
+        $query->skip(($page-1)*10)->take(10);
+        
+        return $query->get()->toArray();
     }
 }

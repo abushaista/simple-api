@@ -22,7 +22,7 @@ class UserController extends Controller
         $query = new GetUserQuery(
             searchTerm: $request->input('search'),
             page: (int)$request->input('page',1),
-            sortBy: $request->input('sortBy')
+            sortBy: $request->input('sortBy','name')
         );
         //
         $result = $this->dispatcher->dispatch($query);
